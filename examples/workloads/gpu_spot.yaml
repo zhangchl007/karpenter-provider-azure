@@ -1,0 +1,42 @@
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: gpu-spot
+  annotations:
+    kubernetes.io/description: "General GPU purpose NodePool for ML workloads"
+spec:
+  disruption:
+    expireAfter: 1h
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+        - key: karpenter.azure.com/sku-gpu-manufacturer
+          operator: In
+          values: ["nvidia"]
+      nodeClassRef:
+        name: gpu-spot
+      taints:
+        - key: nvidia.com/gpu
+          value: "true"
+          effect: NoSchedule
+
+---
+apiVersion: karpenter.azure.com/v1alpha2
+kind: AKSNodeClass
+metadata:
+  name: gpu-spot
+  annotations:
+    kubernetes.io/description: "General purpose AKSNodeClass for running Ubuntu2204 nodes"
+spec:
+  imageFamily: Ubuntu2204
+  imageVersion: 202311.07.0
+  osDiskSizeGB: 128

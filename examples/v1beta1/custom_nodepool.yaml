@@ -1,0 +1,67 @@
+---
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: spot
+  annotations:
+    kubernetes.io/description: "Nodepool for amd64 workloads"
+spec:
+  weight: 60
+  disruption:
+    expireAfter: Never
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+        - key: karpenter.azure.com/sku-family
+          operator: In
+          values: [D,E,F]
+      nodeClassRef:
+        name: azurelinux
+---
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
+metadata:
+  name: ondemand
+  annotations:
+    kubernetes.io/description: "Nodepool for amd64 workloads"
+spec:
+  limits:
+    cpu: "10"
+  weight: 20
+  disruption:
+    expireAfter: Never
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot","on-demand"]
+        - key: karpenter.azure.com/sku-family
+          operator: In
+          values: [D,E,F]
+      nodeClassRef:
+        name: azurelinux
+---
+apiVersion: karpenter.azure.com/v1alpha2
+kind: AKSNodeClass
+metadata:
+  name: azurelinux
+  annotations:
+    kubernetes.io/description: "General purpose AKSNodeClass for running azurelinux nodes"
+spec:
+  imageFamily: AzureLinux

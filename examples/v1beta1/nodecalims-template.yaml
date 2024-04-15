@@ -1,0 +1,104 @@
+apiVersion: v1
+items:
+- apiVersion: karpenter.sh/v1beta1
+  kind: NodeClaim
+  metadata:
+    annotations:
+      karpenter.azure.com/in-place-update-hash: "3854049408"
+      karpenter.sh/nodepool-hash: "4264410562290657875"
+    creationTimestamp: "2024-04-14T04:15:51Z"
+    finalizers:
+    - karpenter.sh/termination
+    generateName: preferspot-
+    generation: 1
+    labels:
+      karpenter.azure.com/sku-cpu: "16"
+      karpenter.azure.com/sku-encryptionathost-capable: "true"
+      karpenter.azure.com/sku-family: D
+      karpenter.azure.com/sku-gpu-count: "0"
+      karpenter.azure.com/sku-memory: "65536"
+      karpenter.azure.com/sku-name: Standard_D16as_v5
+      karpenter.azure.com/sku-networking-accelerated: "true"
+      karpenter.azure.com/sku-storage-premium-capable: "true"
+      karpenter.azure.com/sku-version: "5"
+      karpenter.azure.com/zone: westus3-2
+      karpenter.sh/capacity-type: spot
+      karpenter.sh/nodepool: preferspot
+      kubernetes.io/arch: amd64
+      kubernetes.io/os: linux
+      node.kubernetes.io/instance-type: Standard_D16as_v5
+      topology.kubernetes.io/region: westus3
+    name: preferspot-n24cw
+    ownerReferences:
+    - apiVersion: karpenter.sh/v1beta1
+      blockOwnerDeletion: true
+      kind: NodePool
+      name: preferspot
+      uid: d28858d4-ae06-410b-a444-f0b1375b1ddc
+    resourceVersion: "13966"
+    uid: 973cd1f4-81de-46a7-9426-ea3801d5a062
+  spec:
+    nodeClassRef:
+      name: azurelinux
+    requirements:
+    - key: node.kubernetes.io/instance-type
+      operator: In
+      values:
+      - Standard_D15_v2
+      - Standard_D16as_v5
+      - Standard_D16s_v5
+      - Standard_D32as_v5
+      - Standard_D32s_v5
+      - Standard_D48as_v5
+      - Standard_D48s_v5
+      - Standard_D64as_v5
+      - Standard_D64s_v5
+      - Standard_D96as_v5
+      - Standard_D96s_v5
+      - Standard_DS14_v2_Promo
+      - Standard_DS15_v2
+      - Standard_DS5_v2_Promo
+      - Standard_E16as_v5
+      - Standard_E16s_v5
+      - Standard_E20as_v5
+      - Standard_E20s_v5
+      - Standard_E32as_v5
+      - Standard_E32s_v5
+      - Standard_E48as_v5
+      - Standard_E48s_v5
+      - Standard_E64as_v5
+      - Standard_E64s_v5
+      - Standard_E96as_v5
+      - Standard_E96s_v5
+      - Standard_FX12mds
+      - Standard_FX24mds
+      - Standard_FX36mds
+      - Standard_FX48mds
+    - key: kubernetes.io/arch
+      operator: In
+      values:
+      - amd64
+    - key: kubernetes.io/os
+      operator: In
+      values:
+      - linux
+    - key: karpenter.sh/capacity-type
+      operator: In
+      values:
+      - on-demand
+      - spot
+    - key: karpenter.azure.com/sku-family
+      operator: In
+      values:
+      - D
+      - E
+      - F
+    - key: karpenter.sh/nodepool
+      operator: In
+      values:
+      - preferspot
+    resources:
+      requests:
+        cpu: 9250m
+        memory: 2731280Ki
+        pods: "14"
